@@ -1,7 +1,14 @@
 import { Outlet, useLoaderData, useRouteError } from "react-router";
+import { NavMenu } from "@shopify/app-bridge-react";
 import { boundary } from "@shopify/shopify-app-react-router/server";
 import { AppProvider } from "@shopify/shopify-app-react-router/react";
 import { authenticate } from "../shopify.server";
+
+import { AppProvider as PolarisAppProvider } from "@shopify/polaris";
+import polarisStyles from "@shopify/polaris/build/esm/styles.css?url";
+
+export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
+import translations from "@shopify/polaris/locales/en.json";
 
 export const loader = async ({ request }) => {
   await authenticate.admin(request);
@@ -13,13 +20,21 @@ export const loader = async ({ request }) => {
 export default function App() {
   const { apiKey } = useLoaderData();
 
+  // Debugging: Ensure API key is present
+  console.log("AppProvider API Key:", apiKey);
+
   return (
     <AppProvider embedded apiKey={apiKey}>
-      <s-app-nav>
-        <s-link href="/app">Home</s-link>
-        <s-link href="/app/additional">Additional page</s-link>
-      </s-app-nav>
-      <Outlet />
+      <PolarisAppProvider i18n={translations}>
+        <NavMenu>
+          <a href="/app" rel="home">
+            Home
+          </a>
+          <a href="/app/product-viewer">Product Viewer</a>
+          <a href="/app/admin-orders">Admin Orders</a>
+        </NavMenu>
+        <Outlet />
+      </PolarisAppProvider>
     </AppProvider>
   );
 }

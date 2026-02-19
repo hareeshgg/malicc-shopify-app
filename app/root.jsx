@@ -1,32 +1,19 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
-import { AppProvider } from "@shopify/polaris";
-import "./tailwind.css";
-import "@shopify/polaris/build/esm/styles.css";
-import Header from "../components/header";
+
+import tailwindStyles from "./tailwind.css?url";
+
+export const links = () => [{ rel: "stylesheet", href: tailwindStyles }];
 
 export default function App() {
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <link rel="preconnect" href="https://cdn.shopify.com/" />
-        <link
-          rel="stylesheet"
-          href="https://cdn.shopify.com/static/fonts/inter/v4/styles.css"
-        />
         <Meta />
         <Links />
       </head>
-      <body className="antialiased bg-black text-white">
-        <AppProvider i18n={{}}>
-          <div id="app-root" className="min-h-screen bg-black">
-            <div className="test-css-loaded" style={{ display: 'none' }}>CSS Test</div>
-            <Header />
-            <Outlet />
-          </div>
-          <ScrollRestoration />
-        </AppProvider>
+      <body className="bg-black text-white" id="app-root">
+        <Outlet />
+        <ScrollRestoration />
         <Scripts />
       </body>
     </html>

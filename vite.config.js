@@ -49,31 +49,18 @@ export default defineConfig({
     hmr: hmrConfig,
     fs: {
       // See https://vitejs.dev/config/server-options.html#server-fs-allow for more information
-      allow: ["app", "node_modules"],
+      allow: ["app", "node_modules", "components"],
     },
   },
   plugins: [reactRouter(), tsconfigPaths()],
   css: {
     postcss: path.resolve(__dirname, "postcss.config.js"),
   },
-  resolve: {
-    conditions: ["module", "import", "default"],
-  },
   build: {
     assetsInlineLimit: 0,
-    commonjsOptions: {
-      include: [/@shopify\/polaris/, /node_modules/],
-      transformMixedEsModules: true,
-    },
     cssCodeSplit: false,
   },
   optimizeDeps: {
-    include: ["@shopify/app-bridge-react", "@shopify/polaris"],
-    esbuildOptions: {
-      resolveExtensions: [".js", ".jsx", ".ts", ".tsx"],
-    },
-  },
-  ssr: {
-    noExternal: ["@shopify/polaris"],
+    include: ["@shopify/app-bridge-react"],
   },
 });
